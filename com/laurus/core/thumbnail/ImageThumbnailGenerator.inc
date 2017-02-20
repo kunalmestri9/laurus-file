@@ -107,12 +107,88 @@ class  ImageThumbnailGenerator implements IThumbnailGenerator,IService {
             } else {
                     return false;
             }
-            $temp_image = imagecreatetruecolor($width, $height);
+
+
+
+	    /*if($type == "image/jpeg") {
+                    $ok=imagejpeg($thumb);
+            } else {
+                    $ok=imagepng($thumb);
+            }
+            $this->logger->debug("Is Email Generated " . $ok);
+
+            //imagedestroy($temp_image);
+            //imagedestroy($thumbnail);
+            return;
+
+            */
+
+
+
+
+
+            
+            //if($type == "image/png"){
+               // $temp_image = imagecreate($width, $height);
+           // }else{
+                $temp_image = imagecreatetruecolor($width, $height);
+           // }
+
+
+
+             if($type=="image/png"){
+		$background = imagecolorallocate($temp_image , 0, 0, 0);
+		 // removing the black from the placeholder
+        	imagecolortransparent($temp_image, $background);
+		imagealphablending($temp_image, false);
+	        imagesavealpha($temp_image, true);
+
+
+	     }
+            //$temp_image = imagecreatetruecolor($width, $height);
             imagecopyresampled($temp_image, $thumb, 0, 0, 0, 0, $width, $height, $image_width, $image_height);
-            $thumbnail = imagecreatetruecolor($width, $height);
-            imagecopyresampled($thumbnail, $temp_image, 0, 0, 0, 0, $width, $height, $width, $height);
+           //if($type == "image/png"){
+               $thumbnail = imagecreate($width, $height);
+           //}else{
+           //     $thumbnail = imagecreatetruecolor($width, $height);
+           // }
+           
             header( 'Cache-Control: max-age=604800' );
             header('Expires: '.date(DATE_RFC1123,time()+2592000));
+
+
+           if($type == "image/jpeg") {
+                    $ok=imagejpeg($temp_image);
+            } else {
+                    $ok=imagepng($temp_image);
+            }
+            $this->logger->debug("Is Email Generated " . $ok);
+
+            imagedestroy($temp_image);
+            imagedestroy($thumbnail);
+            return;
+/*
+            
+
+
+            
+            //imagealphablending($thumbnail, true);
+            if($type == "image/png"){
+
+	    	imagesavealpha($thumbnail,true);
+            	$color = imagecolorallocatealpha($thumbnail, 255, 255, 255, 127);
+                imagefill($thumbnail, 0, 0, $color);
+                imagecolortransparent($thumbnail, $color);
+	   }
+//imagealphablending($thumbnail, true);
+            
+            
+            imagecopyresampled($thumbnail, $temp_image, 0, 0, 0, 0, $width, $height, $width, $height);
+            
+            
+            
+ //           header( 'Cache-Control: max-age=604800' );
+ //           header('Expires: '.date(DATE_RFC1123,time()+2592000));
             if($type == "image/jpeg") {
                     $ok=imagejpeg($thumbnail);
             } else {
@@ -122,7 +198,7 @@ class  ImageThumbnailGenerator implements IThumbnailGenerator,IService {
             
             imagedestroy($temp_image);
             imagedestroy($thumbnail);
-
+*/
         }
     }
        
